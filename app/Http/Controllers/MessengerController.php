@@ -28,7 +28,7 @@ class MessengerController extends Controller
         //Log::info('Message received.' . print_r($request->all(), 1));
 
         $bot = new FbBotApp(env('PAGE_ACCESS_TOKEN'));
-        $message = new Message($request->get('entry')[0]['messaging'][0]['sender']['id'], 'Hello beautiful world!');
+        $message = new Message($request->get('entry')[0]['messaging'][0]['sender']['id'], 'You said:' . $request->get('entry')[0]['messaging'][0]['message']['text']);
         $bot->send($message);
     }
 }
