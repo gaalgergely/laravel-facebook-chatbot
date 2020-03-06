@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Thujohn\Twitter\Facades\Twitter;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +25,11 @@ Route::post('/webhook', 'MessengerController@webHookPost');
  * Test Twitter API
  */
 Route::get('/twitter-trends', function () {
-    return \Thujohn\Twitter\Facades\Twitter::getTrendsAvailable();
+    return Twitter::getTrendsAvailable();
+});
+Route::get('/twitter-trends-locations', function () {
+    return array_column(Twitter::getTrendsAvailable(), 'name', 'woeid');
 });
 Route::get('/twitter-trends-place', function () {
-    return \Thujohn\Twitter\Facades\Twitter::getTrendsPlace(['id' => 628886]);
+    return Twitter::getTrendsPlace(['id' => 628886]);
 });

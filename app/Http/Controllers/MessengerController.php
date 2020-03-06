@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Log;
+//use Illuminate\Support\Facades\Log;
 use pimax\FbBotApp;
 use pimax\Messages\Message;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +33,13 @@ class MessengerController extends Controller
          */
         $input = strtolower($request->get('entry')[0]['messaging'][0]['message']['text']);
 
-        if(in_array($input, ['berlin', 'montreal', 'paris'])) {
+        $locations = array_change_key_case(array_column(Twitter::getTrendsAvailable(), 'woeid', 'name'), CASE_LOWER);
 
-            $trends = Twitter::getTrendsPlace(['id' => 638242]);
+        if(array_key_exists($input, $locations)) {
 
-            $text = 'Trends in ' . ucfirst($input) . ': ';
+            $trends = Twitter::getTrendsPlace(['id' => $locations[$input]]);
+
+            $text = 'Trends in ' . ucwords($input) . ': ';
 
             foreach ($trends[0]->trends as $index => $trend) {
                 if($index > 9) break;
