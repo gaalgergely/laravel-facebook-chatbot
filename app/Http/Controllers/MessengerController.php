@@ -16,7 +16,7 @@ class MessengerController extends Controller
         $hubVerifyToken = $request->get('hub_verify_token');
 
         if($localVerifyToken === $hubVerifyToken) {
-            return response()->json(['Ok.']);
+            return $request->get('hub_challenge');
         }
 
         return response()->json(['Bad verify token.'], Response::HTTP_FORBIDDEN);
