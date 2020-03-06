@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use pimax\FbBotApp;
 use pimax\Messages\Message;
 use Symfony\Component\HttpFoundation\Response;
+use Thujohn\Twitter\Facades\Twitter;
 
 class MessengerController extends Controller
 {
@@ -34,7 +35,14 @@ class MessengerController extends Controller
 
         if(in_array($input, ['berlin', 'montreal', 'paris'])) {
 
+            $trends = Twitter::getTrendsPlace(['id' => 638242]);
+
             $text = 'Trends in ' . ucfirst($input) . ': ';
+
+            foreach ($trends[0]->trends as $index => $trend) {
+                if($index > 9) break;
+                $text .= "\n" . ++$index . '. ' . $trend->name;
+            }
 
         } else {
 

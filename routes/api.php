@@ -19,3 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/webhook', 'MessengerController@webHook');
 Route::post('/webhook', 'MessengerController@webHookPost');
+
+/**
+ * Test Twitter API
+ */
+Route::get('/twitter-trends', function () {
+    return \Thujohn\Twitter\Facades\Twitter::getTrendsAvailable();
+});
+Route::get('/twitter-trends-place', function () {
+    return \Thujohn\Twitter\Facades\Twitter::getTrendsPlace(['id' => 628886]);
+});
