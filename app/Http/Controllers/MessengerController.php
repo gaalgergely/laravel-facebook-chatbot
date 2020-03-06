@@ -25,10 +25,33 @@ class MessengerController extends Controller
 
     public function webHookPost(Request $request)
     {
-        //Log::info('Message received.' . print_r($request->all(), 1));
-
         $bot = new FbBotApp(env('PAGE_ACCESS_TOKEN'));
-        $message = new Message($request->get('entry')[0]['messaging'][0]['sender']['id'], 'You said:' . $request->get('entry')[0]['messaging'][0]['message']['text']);
+
+        /**
+         * log the messages sent by the user (collect)
+         */
+        $input = strtolower($request->get('entry')[0]['messaging'][0]['message']['text']);
+
+        if(in_array($input, ['berlin', 'montreal', 'paris'])) {
+
+            $text = 'Trends in ' . ucfirst($input) . ': ';
+
+        } else {
+
+            switch ($input) {
+
+                case 'help': $text = 'How can I help?'; break;
+
+                case 'hi':
+                case 'hello':
+                    $text = 'Hi back!'; break;
+
+                default: $text = 'I can\'t understand';
+            }
+
+        }
+
+        $message = new Message($request->get('entry')[0]['messaging'][0]['sender']['id'], $text);
         $bot->send($message);
     }
 }
