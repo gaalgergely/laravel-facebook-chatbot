@@ -39,7 +39,7 @@ class MessengerController extends Controller
 
             $trends = Twitter::getTrendsPlace(['id' => $locations[$input]]);
 
-            $text = 'Trends in ' . ucwords($input) . ': ';
+            $text = 'Trends in ' . $trends[0]->locations[0]->name . ': ';
 
             foreach ($trends[0]->trends as $index => $trend) {
                 if($index > 9) break;
